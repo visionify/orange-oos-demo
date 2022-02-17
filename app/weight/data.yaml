@@ -1,0 +1,6 @@
+train: yolov5.v2i.yolov5pytorch/train/images
+val: yolov5.v2i.yolov5pytorch/valid/images
+test: yolov5.v2i.yolov5pytorch/test/images
+
+nc: 12
+names: ['bottle', 'box', 'can', 'candy', 'carton', 'container', 'eggs', 'empty-shelf', 'medical-box', 'medicine', 'pouch', 'shelf']
