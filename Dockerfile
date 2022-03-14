@@ -1,6 +1,6 @@
 ﻿# Use nvidia/cuda image
 FROM nvidia/cuda:10.2-cudnn7-runtime-ubuntu18.04
-
+MAINTAINER Hiren Namera
 # set bash as current shell
 RUN chsh -s /bin/bash
 SHELL ["/bin/bash", "-c"]

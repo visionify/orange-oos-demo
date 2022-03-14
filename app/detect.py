@@ -77,6 +77,7 @@ class Prediction:
 
     def predict_image(self,image):
         # img = cv2.imread(image_path)
+        # print(image)
         return self.predict(image)
 
 
