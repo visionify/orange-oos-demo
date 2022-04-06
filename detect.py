@@ -114,17 +114,25 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
     dt, seen = [0.0, 0.0, 0.0], 0
     for path, im, im0s, vid_cap, s in dataset:
         t1 = time_sync()
+        # print(im)
         im = torch.from_numpy(im).to(device)
         im = im.half() if half else im.float()  # uint8 to fp16/32
+        print(im,im.shape)
+        # exit()
         im /= 255  # 0 - 255 to 0.0 - 1.0
         if len(im.shape) == 3:
             im = im[None]  # expand for batch dim
         t2 = time_sync()
         dt[0] += t2 - t1
-
+        print(im)
+        # exit()
         # Inference
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
+        print("in",im,im.shape)
+        # exit()
         pred = model(im, augment=augment, visualize=visualize)
+        print("pp",(pred))
+        # exit()
         t3 = time_sync()
         dt[1] += t3 - t2
 
@@ -153,8 +161,9 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
             if len(det):
                 # Rescale boxes from img_size to im0 size
+                print("pred", pred)
                 det[:, :4] = scale_coords(im.shape[2:], det[:, :4], im0.shape).round()
-
+                print("det", det[:,:4])
                 # Print results
                 for c in det[:, -1].unique():
                     n = (det[:, -1] == c).sum()  # detections per class
@@ -219,7 +228,7 @@ def parse_opt():
     parser.add_argument('--source', type=str, default=ROOT / 'data/images', help='file/dir/URL/glob, 0 for webcam')
     parser.add_argument('--data', type=str, default=ROOT / 'data/coco128.yaml', help='(optional) dataset.yaml path')
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
-    parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
+    parser.add_argument('--conf-thres', type=float, default=0.5, help='confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
     parser.add_argument('--max-det', type=int, default=1000, help='maximum detections per image')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
@@ -246,11 +255,9 @@ def parse_opt():
     print_args(FILE.stem, opt)
     return opt
 
-
 def main(opt):
     check_requirements(exclude=('tensorboard', 'thop'))
     run(**vars(opt))
-
 
 if __name__ == "__main__":
     opt = parse_opt()

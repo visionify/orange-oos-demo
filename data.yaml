@@ -1,0 +1,6 @@
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 9
+names: ['bottle', 'box', 'can', 'carton', 'container', 'eggs', 'pouch', 'v', 'void']

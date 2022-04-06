@@ -254,3 +254,13 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+data2/
+data3/
+no_resize
+test/
+train/
+valid/
+
+*.out
+yolov5/
