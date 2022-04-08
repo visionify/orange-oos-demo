@@ -37,7 +37,8 @@ ENV CONDA_DEFAULT_ENV yolo_hrn
 
 RUN pip install -r requirements.txt
 
-RUN conda install pytorch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0 cudatoolkit=10.2 -c pytorch
+
+RUN conda install pytorch==1.9.0 torchvision==0.10.0 cudatoolkit=10.2 -c pytorch -y
 EXPOSE 80
 
 # Set the working directory
