@@ -36,15 +36,13 @@ def predict_image_handler(project=None, publishedName=None):
         imageData = None
         payload = json.loads(request.data)
         imgb64 = payload['imageData']
-        print(imgb64)
+        # print(imgb64)
         im_bytes = base64.b64decode(imgb64)
-        print(im_bytes)
+        # print(im_bytes)
         im_arr = np.frombuffer(im_bytes, dtype=np.uint8)  # im_arr is one-dim Numpy array
         img = cv2.imdecode(im_arr, flags=cv2.IMREAD_UNCHANGED)
         if img.shape[2]==4:
             img=cv2.cvtColor(img,cv2.COLOR_RGBA2RGB)
-        # img = cv2.imdecode(np.frombuffer(imageData, np.uint8), 1)
-        # if img.ndim == 4:
         results = prediction_object.predict_image(img)
         return jsonify(results)
     except Exception as e:

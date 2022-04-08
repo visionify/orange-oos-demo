@@ -38,7 +38,7 @@ class Prediction:
         img = np.ascontiguousarray(img)
         img = torch.from_numpy(img).to(self.device)
         img=img.float()
-        print(img)
+        # print(img)
         img /= 255
         if len(img.shape) == 3:
             img = img[None]
@@ -53,6 +53,7 @@ class Prediction:
         for i, det in enumerate(pred):  # per image
             s += '%gx%g ' % img.shape[2:]
             gn = torch.tensor(img0.shape)[[1, 0, 1, 0]]
+            # print(img.shape[2:], img0.shape)
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img0.shape).round()
@@ -63,10 +64,14 @@ class Prediction:
                 for *xyxy, conf, cls in reversed(det):
                     xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                     c = int(cls)
+                    # p1, p2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
+                    # cv2.rectangle(img0, p1, p2, (255,255,0), thickness=1, lineType=cv2.LINE_AA)
+                    # print(p1,p1)
                     label =self.names[c]
-                    prediction.append({"label_index":c,"label_name":label,"confidence":float(conf),"bounding_box":{"x":xywh[0],"y":xywh[1],"width":xywh[2],"height":xywh[3]}})
+                    prediction.append({"label_index":c,"label_name":label,"confidence":float(conf),"bounding_box":{"x1":xyxy[0],"y1":xyxy[1],"x2":xyxy[2],"y2":xyxy[3]}})
         result['predictions']=prediction
-        print(result)
+        # print(result)
+        # cv2.imwrite("file.png",img0)
         return result
 
     def predict_url(self,image_url):
