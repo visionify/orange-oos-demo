@@ -62,13 +62,13 @@ class Prediction:
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {self.names[int(c)]}{'s' * (n > 1)}, "  # add to string
                 for *xyxy, conf, cls in reversed(det):
-                    xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
+                    # xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                     c = int(cls)
                     # p1, p2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
                     # cv2.rectangle(img0, p1, p2, (255,255,0), thickness=1, lineType=cv2.LINE_AA)
                     # print(p1,p1)
                     label =self.names[c]
-                    prediction.append({"label_index":c,"label_name":label,"confidence":float(conf),"bounding_box":{"x1":xyxy[0],"y1":xyxy[1],"x2":xyxy[2],"y2":xyxy[3]}})
+                    prediction.append({"label_index":c,"label_name":label,"confidence":float(conf),"bounding_box":{"x1":str(xyxy[0].item()),"y1":str(xyxy[1].item()),"x2":str(xyxy[2].item()),"y2":str(xyxy[3].item())}})
         result['predictions']=prediction
         # print(result)
         # cv2.imwrite("file.png",img0)
